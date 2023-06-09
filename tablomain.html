@@ -3,12 +3,26 @@
 <head>
   <title>Odjezdová tabule</title>
   <style>
+    body {
+      background-color: #f1f1f1;
+    }
+
     #departure-board {
       font-family: Arial, sans-serif;
       width: 400px;
       margin: 0 auto;
       border: 1px solid #ccc;
       padding: 10px;
+      background-color: #eaf3ff;
+    }
+
+    #platform-board {
+      font-family: Arial, sans-serif;
+      width: 400px;
+      margin: 20px auto;
+      border: 1px solid #ccc;
+      padding: 10px;
+      background-color: #eaf3ff;
     }
   </style>
 </head>
@@ -21,6 +35,7 @@
           <th>Čas</th>
           <th>Linka</th>
           <th>Směr</th>
+          <th>Druh</th>
         </tr>
       </thead>
       <tbody id="departure-body">
@@ -29,44 +44,39 @@
     </table>
   </div>
 
+  <div id="platform-board">
+    <h2>Nástupiště</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Nástupiště</th>
+          <th>Popis</th>
+        </tr>
+      </thead>
+      <tbody id="platform-body">
+        <!-- Tady budou zobrazena data o nástupištích -->
+      </tbody>
+    </table>
+  </div>
+
   <script>
     // Simulovaná data o odjezdech
     var departures = [
-      { time: '09:00', line: 'S1', direction: 'Praha' },
-      { time: '09:30', line: 'S2', direction: 'Brno' },
-      { time: '10:00', line: 'S3', direction: 'Ostrava' },
-      { time: '10:30', line: 'S4', direction: 'Plzeň' },
-      { time: '13:00', line: 'S5', direction: 'Olomouc' }
+      { time: '09:00', line: 'S1', direction: 'Praha', type: 'Rychlík' },
+      { time: '09:30', line: 'S2', direction: 'Brno', type: 'Spěšný' },
+      { time: '10:00', line: 'S3', direction: 'Ostrava', type: 'Osobní' },
+      { time: '10:30', line: 'S4', direction: 'Plzeň', type: 'Rychlík' },
+      { time: '11:00', line: 'S5', direction: 'Olomouc', type: 'Spěšný' }
+    ];
+
+    // Simulovaná data o nástupištích
+    var platforms = [
+      { platform: '1', description: 'Směr Praha' },
+      { platform: '1', description: 'Směr Brno' },
+      { platform: '3', description: 'Směr Ostrava' },
+      { platform: '4', description: 'Směr Plzeň' },
+      { platform: '5', description: 'Směr Olomouc' }
     ];
 
     // Funkce pro vykreslení odjezdové tabule
-    function renderDepartureBoard() {
-      var departureBody = document.getElementById('departure-body');
-      departureBody.innerHTML = '';
-
-      departures.forEach(function (departure) {
-        var row = document.createElement('tr');
-        var timeCell = document.createElement('td');
-        var lineCell = document.createElement('td');
-        var directionCell = document.createElement('td');
-
-        timeCell.textContent = departure.time;
-        lineCell.textContent = departure.line;
-        directionCell.textContent = departure.direction;
-
-        row.appendChild(timeCell);
-        row.appendChild(lineCell);
-        row.appendChild(directionCell);
-
-        departureBody.appendChild(row);
-      });
-    }
-
-    // Vyčkat, až se načte celý dokument
-    document.addEventListener('DOMContentLoaded', function () {
-      // Spustit funkci pro vykreslení odjezdové tabule
-      renderDepartureBoard();
-    });
-  </script>
-</body>
-</html>
+    function renderDepartureBoard
