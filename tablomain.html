@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Odjezdová tabule</title>
+  <style>
+    #departure-board {
+      font-family: Arial, sans-serif;
+      width: 400px;
+      margin: 0 auto;
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="departure-board">
+    <h2>Odjezdová tabule</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Čas</th>
+          <th>Linka</th>
+          <th>Směr</th>
+        </tr>
+      </thead>
+      <tbody id="departure-body">
+        <!-- Tady budou zobrazena data o odjezdech -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // Simulovaná data o odjezdech
+    var departures = [
+      { time: '09:00', line: 'S1', direction: 'Praha' },
+      { time: '09:30', line: 'S2', direction: 'Brno' },
+      { time: '10:00', line: 'S3', direction: 'Ostrava' },
+      { time: '10:30', line: 'S4', direction: 'Plzeň' },
+      { time: '11:00', line: 'S5', direction: 'Olomouc' }
+    ];
+
+    // Funkce pro vykreslení odjezdové tabule
+    function renderDepartureBoard() {
+      var departureBody = document.getElementById('departure-body');
+      departureBody.innerHTML = '';
+
+      departures.forEach(function (departure) {
+        var row = document.createElement('tr');
+        var timeCell = document.createElement('td');
+        var lineCell = document.createElement('td');
+        var directionCell = document.createElement('td');
+
+        timeCell.textContent = departure.time;
+        lineCell.textContent = departure.line;
+        directionCell.textContent = departure.direction;
+
+        row.appendChild(timeCell);
+        row.appendChild(lineCell);
+       
