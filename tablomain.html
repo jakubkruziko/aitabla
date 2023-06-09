@@ -76,7 +76,36 @@
       { platform: '3', description: 'Směr Ostrava' },
       { platform: '4', description: 'Směr Plzeň' },
       { platform: '5', description: 'Směr Oldřichov' },
-        ];
+    ];
 
     // Funkce pro vykreslení odjezdové tabule
-    function renderDepartureBoard
+    function renderDepartureBoard() {
+      var departureBody = document.getElementById('departure-body');
+      departureBody.innerHTML = '';
+
+      departures.forEach(function (departure) {
+        var row = document.createElement('tr');
+        var timeCell = document.createElement('td');
+        var lineCell = document.createElement('td');
+        var directionCell = document.createElement('td');
+
+        timeCell.textContent = departure.time;
+        lineCell.textContent = departure.line;
+        directionCell.textContent = departure.direction;
+
+        row.appendChild(timeCell);
+        row.appendChild(lineCell);
+        row.appendChild(directionCell);
+
+        departureBody.appendChild(row);
+      });
+    }
+
+    // Vyčkat, až se načte celý dokument
+    document.addEventListener('DOMContentLoaded', function () {
+      // Spustit funkci pro vykreslení odjezdové tabule
+      renderDepartureBoard();
+    });
+  </script>
+</body>
+</html>
