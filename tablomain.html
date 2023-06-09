@@ -56,4 +56,17 @@
 
         row.appendChild(timeCell);
         row.appendChild(lineCell);
-       
+        row.appendChild(directionCell);
+
+        departureBody.appendChild(row);
+      });
+    }
+
+    // Vyčkat, až se načte celý dokument
+    document.addEventListener('DOMContentLoaded', function () {
+      // Spustit funkci pro vykreslení odjezdové tabule
+      renderDepartureBoard();
+    });
+  </script>
+</body>
+</html>
