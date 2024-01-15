@@ -40,7 +40,7 @@
     // Funkce pro získání dat z API
     async function fetchData() {
       try {
-        const response = await fetch('https://api.golemio.cz/v2/pid/departureboards/?ids=3001003&total=20');
+        const response = await fetch('https://api.golemio.cz/v2/pid/departureboards/?ids=U1274Z1P&total=20');
         const data = await response.json();
         return data;
       } catch (error) {
