@@ -1,27 +1,90 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title>Odjezdová tabule</title>
   <style>
     body {
-      background-image: linear-gradient(to bottom, #b2d8d8, #8fd6e1);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
       transition: background-color 0.5s ease;
     }
 
     #departure-board {
-      font-family: Arial, sans-serif;
       width: 400px;
-      margin: 0 auto;
-      border: 1px solid #ccc;
-      padding: 10px;
-      background-color: #ffffff;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
       transition: background-color 0.5s ease;
     }
 
     .dark-mode #departure-board {
       background-color: #333;
       color: #fff;
+    }
+
+    #departure-board h2 {
+      margin: 0;
+      padding: 20px;
+      background-color: #2196F3;
+      color: #fff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    button {
+      margin: 20px;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .dark-mode button {
+      background-color: #555;
+    }
+
+    .mode-icons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .mode-icons img {
+      width: 30px;
+      height: 30px;
+      margin: 0 5px;
+      cursor: pointer;
+      transition: opacity 0.3s ease;
+    }
+
+    .mode-icons img:hover {
+      opacity: 0.8;
     }
   </style>
 </head>
@@ -43,12 +106,16 @@
     </table>
   </div>
 
+  <div class="mode-icons">
+    <img src="https://img.icons8.com/dusk/64/000000/sun.png" onclick="setLightMode()" alt="Světlý režim">
+    <img src="https://img.icons8.com/nolan/64/moon.png" onclick="setDarkMode()" alt="Tmavý režim">
+  </div>
+
   <script>
     // Funkce pro získání dat z API
     async function fetchData() {
       try {
-        const response = await fetch('https://api.golemio.cz/v2/pid/departureboards?ids=U458Z101P&aswIds=458_101&cisIds=28004&names=Sm%C3%ADchovsk%C3%A9%20n%C3%A1dra%C5%BE%C3%AD&minutesBefore=10&minutesAfter=60&timeFrom=2021-01-21T06%3A00%3A00&includeMetroTrains=true&airCondition=true&preferredTimezone=Europe_Prague&mode=departures&order=real&filter=routeOnce&skip=canceled&limit=0&total=0&offset=0
-');
+        const response = await fetch('https://api.golemio.cz/v2/pid/departureboards?ids=U458Z101P&aswIds=458_101&cisIds=28004&names=Sm%C3%ADchovsk%C3%A9%20n%C3%A1dra%C5%BE%C3%AD&minutesBefore=10&minutesAfter=60&timeFrom=2021-01-21T06%3A00%3A00&includeMetroTrains=true&airCondition=true&preferredTimezone=Europe_Prague&mode=departures&order=real&filter=routeOnce&skip=canceled&limit=0&total=0&offset=0');
         const data = await response.json();
         return data;
       } catch (error) {
@@ -65,7 +132,7 @@
       const departures = await fetchData();
 
       // Vykreslení dat do tabule
-      departures.forEach((departure) => {
+      departures.departures.forEach((departure) => {
         const row = document.createElement('tr');
         const timeCell = document.createElement('td');
         const lineCell = document.createElement('td');
@@ -87,16 +154,16 @@
     }
 
     // Přepínání mezi světlým a tmavým motivem
-    function toggleDarkMode() {
-      const body = document.body;
-      body.classList.toggle('dark-mode');
+    function setDarkMode() {
+      document.body.classList.add('dark-mode');
+    }
+
+    function setLightMode() {
+      document.body.classList.remove('dark-mode');
     }
 
     // Vyvolání funkce pro vykreslení odjezdové tabule
     renderDepartureBoard();
   </script>
-
-  <!-- Tlačítko pro přepnutí mezi světlým a tmavým motivem -->
-  <button onclick="toggleDarkMode()">Přepnout motiv</button>
 </body>
 </html>
