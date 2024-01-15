@@ -4,7 +4,7 @@
   <title>Odjezdová tabule</title>
   <style>
     body {
-      background-color: #f1f1f1;
+      background-image: linear-gradient(to bottom, #b2d8d8, #8fd6e1);
     }
 
     #departure-board {
@@ -13,16 +13,8 @@
       margin: 0 auto;
       border: 1px solid #ccc;
       padding: 10px;
-      background-color: #eaf3ff;
-    }
-
-    #platform-board {
-      font-family: Arial, sans-serif;
-      width: 400px;
-      margin: 20px auto;
-      border: 1px solid #ccc;
-      padding: 10px;
-      background-color: #eaf3ff;
+      background-color: #ffffff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
   </style>
 </head>
@@ -44,68 +36,50 @@
     </table>
   </div>
 
-  <div id="platform-board">
-    <h2>Nástupiště</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Nástupiště</th>
-          <th>Popis</th>
-        </tr>
-      </thead>
-      <tbody id="platform-body">
-        <!-- Tady budou zobrazena data o nástupištích -->
-      </tbody>
-    </table>
-  </div>
-
   <script>
-    // Simulovaná data o odjezdech
-    var departures = [
-      { time: '09:00', line: 'S1', direction: 'Praha', type: 'Rychlík' },
-      { time: '09:30', line: 'S2', direction: 'Brno', type: 'Spěšný' },
-      { time: '10:00', line: 'S3', direction: 'Ostrava', type: 'Osobní' },
-      { time: '10:30', line: 'S4', direction: 'Plzeň', type: 'Rychlík' },
-      { time: '11:00', line: 'S5', direction: 'Olomouc', type: 'Spěšný' }
-    ];
-
-    // Simulovaná data o nástupištích
-    var platforms = [
-      { platform: '1', description: 'Směr Praha' },
-      { platform: '2', description: 'Směr Brno' },
-      { platform: '3', description: 'Směr Ostrava' },
-      { platform: '4', description: 'Směr Plzeň' },
-      { platform: '5', description: 'Směr Oldřichov' },
-    ];
+    // Funkce pro získání dat z API
+    async function fetchData() {
+      try {
+        const response = await fetch('https://api.golemio.cz/v2/pid/departureboards/?ids=3001003&total=20');
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error('Chyba při načítání dat:', error);
+      }
+    }
 
     // Funkce pro vykreslení odjezdové tabule
-    function renderDepartureBoard() {
-      var departureBody = document.getElementById('departure-body');
+    async function renderDepartureBoard() {
+      const departureBody = document.getElementById('departure-body');
       departureBody.innerHTML = '';
 
-      departures.forEach(function (departure) {
-        var row = document.createElement('tr');
-        var timeCell = document.createElement('td');
-        var lineCell = document.createElement('td');
-        var directionCell = document.createElement('td');
+      // Získání dat z API
+      const departures = await fetchData();
 
-        timeCell.textContent = departure.time;
-        lineCell.textContent = departure.line;
-        directionCell.textContent = departure.direction;
+      // Vykreslení dat do tabule
+      departures.forEach((departure) => {
+        const row = document.createElement('tr');
+        const timeCell = document.createElement('td');
+        const lineCell = document.createElement('td');
+        const directionCell = document.createElement('td');
+        const typeCell = document.createElement('td');
+
+        timeCell.textContent = departure.departure_timestamp.scheduled;
+        lineCell.textContent = departure.route_short_name;
+        directionCell.textContent = departure.headsign;
+        typeCell.textContent = departure.type;
 
         row.appendChild(timeCell);
         row.appendChild(lineCell);
         row.appendChild(directionCell);
+        row.appendChild(typeCell);
 
         departureBody.appendChild(row);
       });
     }
 
-    // Vyčkat, až se načte celý dokument
-    document.addEventListener('DOMContentLoaded', function () {
-      // Spustit funkci pro vykreslení odjezdové tabule
-      renderDepartureBoard();
-    });
+    // Vyvolání funkce pro vykreslení odjezdové tabule
+    renderDepartureBoard();
   </script>
 </body>
 </html>
